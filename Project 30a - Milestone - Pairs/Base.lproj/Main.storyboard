@@ -21,24 +21,8 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="IMG_0011" highlightedImage="sean1" translatesAutoresizingMaskIntoConstraints="NO" id="oof-Wo-1xE">
-                                <rect key="frame" x="563" y="438" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R3A-cW-4k5">
-                                <rect key="frame" x="274" y="438" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WQY-9B-fuK">
-                                        <rect key="frame" x="97" y="49" width="46" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                            </view>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstItem="Nge-Id-Zw7" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="FIz-Ui-Gbg"/>
                             <constraint firstItem="Nge-Id-Zw7" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="z8F-Dr-V1J"/>
@@ -51,8 +35,4 @@
             <point key="canvasLocation" x="139" y="138"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="IMG_0011" width="1280" height="853"/>
-        <image name="sean1" width="1280" height="853"/>
-    </resources>
 </document>

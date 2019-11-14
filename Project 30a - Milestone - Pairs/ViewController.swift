@@ -10,65 +10,94 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var firstView: UIView!
-    var secondView: UIView!
+    var cardTop: UIView!
+    var cardBottom: UIView!
+    
+    var topCards = [UIView]()
+    var bottomCards = [UIView]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        let cardsView = UIView(frame: CGRect(x: (view.frame.width / 2) - 500 , y: 100, width: 1000, height: 800))
+        cardsView.backgroundColor = .white
+        cardsView.layer.borderColor = UIColor.gray.cgColor
+        cardsView.layer.borderWidth = 5
+        view.addSubview(cardsView)
+        
+        let cardWidth = 200
+        let cardHeight = 200
+        var buttonTag = -1
+
+        for row in 0..<4 {
+            for col in 0..<5 {
+                buttonTag += 1
+
+                let cardPosition = CGRect(x: col * cardWidth, y: row * cardHeight, width: cardWidth, height: cardHeight)
+                
+                cardTop = UIView(frame: cardPosition)
+                cardTop.tag = buttonTag
+                cardTop.backgroundColor = UIColor.black
+                cardTop.layer.borderColor = UIColor.gray.cgColor
+                cardTop.layer.borderWidth = 2.5
+
+                let button = UIButton()
+                button.tag = buttonTag
+                button.titleLabel?.font = UIFont.systemFont(ofSize: 34, weight: .thin)
+                button.setTitle("PAIRS", for: .normal)
+                button.setTitleShadowColor(.cyan, for: .normal)
+                button.frame = CGRect(x: 0, y: 0, width: cardWidth, height: cardHeight)
+                button.addTarget(self, action: #selector(cardTapped), for: .touchUpInside)
+                cardTop.addSubview(button)
+                
+                cardBottom = UIView(frame: cardPosition)
+                cardBottom.tag = buttonTag
+                cardBottom.backgroundColor = UIColor.blue
+                cardBottom.layer.borderColor = UIColor.gray.cgColor
+                cardBottom.layer.borderWidth = 2.5
+
+                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cardWidth, height: cardHeight))
+                imageView.image = UIImage(named: "sean1")
+                imageView.contentMode = .scaleAspectFill
+                imageView.clipsToBounds = true
+                cardBottom.addSubview(imageView)
+                
+                cardBottom.isHidden = true
+
+                cardsView.addSubview(cardTop)
+                topCards.append(cardTop)
+                cardsView.addSubview(cardBottom)
+                bottomCards.append(cardBottom)
+            }
+        }
    
-        firstView = UIView(frame: CGRect(x: 32, y: 32, width: 128, height: 128))
-        let button = UIButton()
-        button.frame = CGRect(x: 0, y: 0, width: 128, height: 128)
-        button.addTarget(self, action: #selector(flip), for: .touchUpInside)
-        firstView.addSubview(button)
-        
-        secondView = UIView(frame: CGRect(x: 32, y: 32, width: 128, height: 128))
-        
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 128, height: 128))
-        imageView.image = UIImage(named: "sean1")
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        secondView.addSubview(imageView)
-        
-        let button2 = UIButton()
-        button2.frame = CGRect(x: 0, y: 0, width: 128, height: 128)
-        button2.addTarget(self, action: #selector(flip2), for: .touchUpInside)
-        secondView.addSubview(button2)
 
-        firstView.backgroundColor = UIColor.red
-        secondView.backgroundColor = UIColor.blue
-        
-
-        secondView.isHidden = true
-
-        view.addSubview(firstView)
-        view.addSubview(secondView)
 
     }
     
-    @objc func flip() {
+    @objc func cardTapped(sender: UIButton) {
         let transitionOptions: UIView.AnimationOptions = [.transitionFlipFromRight, .showHideTransitionViews]
-
-        UIView.transition(with: firstView, duration: 1.0, options: transitionOptions, animations: {
-            self.firstView.isHidden = true
+        print(sender.tag)
+        UIView.transition(with: topCards[sender.tag], duration: 2.0, options: transitionOptions, animations: {
+            self.topCards[sender.tag].isHidden = true
         })
 
-        UIView.transition(with: secondView, duration: 1.0, options: transitionOptions, animations: {
-            self.secondView.isHidden = false
+        UIView.transition(with: bottomCards[sender.tag], duration: 1, options: transitionOptions, animations: {
+            self.bottomCards[sender.tag].isHidden = false
         })
-    }
-    
-    @objc func flip2() {
-        let transitionOptions: UIView.AnimationOptions = [.transitionFlipFromRight, .showHideTransitionViews]
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            print("HELLO")
+            UIView.transition(with: self.bottomCards[sender.tag], duration: 0.4, options: transitionOptions, animations: {
+                self.bottomCards[sender.tag].isHidden = true
+            })
+            
+            UIView.transition(with: self.topCards[sender.tag], duration: 1, options: transitionOptions, animations: {
+                self.topCards[sender.tag].isHidden = false
+            })
+        }
 
-        UIView.transition(with: firstView, duration: 1.0, options: transitionOptions, animations: {
-            self.firstView.isHidden = false
-        })
-
-        UIView.transition(with: secondView, duration: 1.0, options: transitionOptions, animations: {
-            self.secondView.isHidden = true
-        })
     }
 
 }
