@@ -12,20 +12,31 @@ class ViewController: UIViewController {
     
     var cardTop: UIView!
     var cardBottom: UIView!
+    var cardsView: UIView!
     
     var topCards = [UIView]()
     var bottomCards = [UIView]()
+    var images = [UIImage]()
+    
+    var tappedCards = [UIButton]()
+    var firstCardTag: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        for _ in 0..<2 {
+            for index in 1...10 {
+                images.append(UIImage(named: "\(index)")!)
+            }
+        }
+        images.shuffle()
         
-        let cardsView = UIView(frame: CGRect(x: (view.frame.width / 2) - 500 , y: 100, width: 1000, height: 800))
+        cardsView = UIView(frame: CGRect(x: (view.frame.width / 2) - 500 , y: 100, width: 1000, height: 800))
         cardsView.backgroundColor = .white
         cardsView.layer.borderColor = UIColor.gray.cgColor
         cardsView.layer.borderWidth = 5
         view.addSubview(cardsView)
-        
+                
         let cardWidth = 200
         let cardHeight = 200
         var buttonTag = -1
@@ -58,7 +69,7 @@ class ViewController: UIViewController {
                 cardBottom.layer.borderWidth = 2.5
 
                 let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cardWidth, height: cardHeight))
-                imageView.image = UIImage(named: "sean1")
+                imageView.image = images[buttonTag]
                 imageView.contentMode = .scaleAspectFill
                 imageView.clipsToBounds = true
                 cardBottom.addSubview(imageView)
@@ -77,6 +88,8 @@ class ViewController: UIViewController {
     }
     
     @objc func cardTapped(sender: UIButton) {
+
+        //Flip Card
         let transitionOptions: UIView.AnimationOptions = [.transitionFlipFromRight, .showHideTransitionViews]
         print(sender.tag)
         UIView.transition(with: topCards[sender.tag], duration: 2.0, options: transitionOptions, animations: {
@@ -87,17 +100,50 @@ class ViewController: UIViewController {
             self.bottomCards[sender.tag].isHidden = false
         })
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            print("HELLO")
-            UIView.transition(with: self.bottomCards[sender.tag], duration: 0.4, options: transitionOptions, animations: {
-                self.bottomCards[sender.tag].isHidden = true
-            })
-            
-            UIView.transition(with: self.topCards[sender.tag], duration: 1, options: transitionOptions, animations: {
-                self.topCards[sender.tag].isHidden = false
-            })
+        for card in tappedCards {
+            if card.tag == sender.tag {
+                print("Matching Card")
+                //User interaction enabled false
+                
+                
+            } else {
+                // Flip cards back over
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    
+                    // Flip second card back over
+                    UIView.transition(with: self.bottomCards[sender.tag], duration: 0.4, options: transitionOptions, animations: {
+                        self.bottomCards[sender.tag].isHidden = true
+                    })
+                    
+                    UIView.transition(with: self.topCards[sender.tag], duration: 1, options: transitionOptions, animations: {
+                        self.topCards[sender.tag].isHidden = false
+                    })
+                    
+                    // Flip first card back over
+                    UIView.transition(with: self.bottomCards[self.firstCardTag!], duration: 0.4, options: transitionOptions, animations: {
+                        self.bottomCards[self.firstCardTag!].isHidden = true
+                    })
+                    
+                    UIView.transition(with: self.topCards[self.firstCardTag!], duration: 1, options: transitionOptions, animations: {
+                        self.topCards[self.firstCardTag!].isHidden = false
+                    })
+                    
+                    
+                    self.firstCardTag = nil
+                    self.tappedCards.removeAll(keepingCapacity: true)
+                    self.cardsView.isUserInteractionEnabled = true
+                }
+            }
         }
+        
+        tappedCards.append(sender)
+        if firstCardTag == nil {
+            firstCardTag = sender.tag
+        }
+        if tappedCards.count == 2 {
+            cardsView.isUserInteractionEnabled = false
 
+        }
     }
 
 }
